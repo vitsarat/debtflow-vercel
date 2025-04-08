@@ -3,6 +3,10 @@
     {
       "source": "/",
       "destination": "/dashboard.html"
+    },
+    {
+      "source": "/dashboard",
+      "destination": "/dashboard.html"
     }
   ],
   "builds": [
@@ -21,5 +25,7 @@
       "memory": 128,
       "maxDuration": 10
     }
-  }
+  },
+  "cleanUrls": true,
+  "trailingSlash": false
 }
