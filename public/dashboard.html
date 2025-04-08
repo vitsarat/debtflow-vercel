@@ -4,84 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แดชบอร์ด - DebtFlow</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f2f5;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
             margin: 0;
             padding: 0;
-            padding-bottom: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         .container {
-            max-width: 100%;
-            margin: 0 auto;
-            padding: 15px;
             text-align: center;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        h3 {
+        h1 {
             color: #333;
-            font-size: 20px;
+            margin-bottom: 10px;
         }
-        .nav-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 10px 0;
-            display: flex;
-            justify-content: space-around;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        }
-        .nav-item {
+        p {
             color: #666;
-            text-align: center;
-            font-size: 12px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
             text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
         }
-        .nav-item.active {
-            color: #1e3c72;
-        }
-        .nav-item i {
-            display: block;
-            font-size: 20px;
-            margin-bottom: 5px;
+        .btn:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h3>แดชบอร์ด - DebtFlow</h3>
-        <p>ยินดีต้อนรับ! ไปที่หน้า <a href="tasks.html">งาน</a> เพื่อดูรายการงาน</p>
-    </div>
-
-    <div class="nav-bar">
-        <a href="dashboard.html" class="nav-item active">
-            <i class="fas fa-home"></i>
-            หน้าแรก
-        </a>
-        <a href="tasks.html" class="nav-item">
-            <i class="fas fa-briefcase"></i>
-            งาน
-        </a>
-        <a href="performance.html" class="nav-item">
-            <i class="fas fa-chart-line"></i>
-            ผลงาน
-        </a>
-        <a href="income.html" class="nav-item">
-            <i class="fas fa-wallet"></i>
-            รายได้
-        </a>
-        <a href="profile.html" class="nav-item">
-            <i class="fas fa-user-circle"></i>
-            โปรไฟล์
-        </a>
+        <h1>แดชบอร์ด - DebtFlow</h1>
+        <p>ยินดีต้อนรับสู่ระบบจัดการหนี้</p>
+        <a href="/tasks.html" class="btn">ไปที่หน้างาน</a>
     </div>
 </body>
 </html>
