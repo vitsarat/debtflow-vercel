@@ -5,6 +5,17 @@
       "destination": "/dashboard.html"
     }
   ],
+  "builds": [
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "api/**",
+      "use": "@vercel/node"
+    }
+  ],
+  "outputDirectory": "public",
   "functions": {
     "api/*.js": {
       "memory": 128,
