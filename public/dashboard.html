@@ -42,13 +42,86 @@
         .btn:hover {
             background-color: #0056b3;
         }
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        .login-form input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .login-form button {
+            padding: 10px;
+            background-color: #28a745;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .login-form button:hover {
+            background-color: #218838;
+        }
+        .error {
+            color: #dc3545;
+            margin-top: 10px;
+        }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>แดชบอร์ด - DebtFlow</h1>
-        <p>ยินดีต้อนรับสู่ระบบจัดการหนี้</p>
-        <a href="/tasks.html" class="btn">ไปที่หน้างาน</a>
+
+        <!-- ฟอร์มล็อกอิน -->
+        <div id="loginSection" class="login-form">
+            <p>สำหรับผู้ใช้ที่ได้รับอนุญาตเท่านั้น</p>
+            <input type="text" id="username" placeholder="ชื่อผู้ใช้" required>
+            <input type="password" id="password" placeholder="รหัสผ่าน" required>
+            <button onclick="login()">ล็อกอิน</button>
+            <p id="errorMessage" class="error hidden"></p>
+        </div>
+
+        <!-- เนื้อหาแดชบอร์ดหลังล็อกอิน -->
+        <div id="dashboardContent" class="hidden">
+            <p>ยินดีต้อนรับสู่ระบบจัดการหนี้</p>
+            <a href="/tasks.html" class="btn">ไปที่หน้างาน</a>
+        </div>
     </div>
+
+    <script>
+        // ตัวแปรสำหรับเก็บสถานะการล็อกอิน (เก็บใน localStorage เพื่อความง่าย)
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+        // ตรวจสอบสถานะการล็อกอินเมื่อโหลดหน้า
+        if (isLoggedIn) {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('dashboardContent').classList.remove('hidden');
+        }
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            // ตัวอย่างการตรวจสอบ (ในแอปจริงควรใช้ server-side authentication)
+            if (username === 'admin' && password === 'password123') {
+                localStorage.setItem('isLoggedIn', 'true');
+                document.getElementById('loginSection').classList.add('hidden');
+                document.getElementById('dashboardContent').classList.remove('hidden');
+                errorMessage.classList.add('hidden');
+            } else {
+                errorMessage.textContent = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+                errorMessage.classList.remove('hidden');
+            }
+        }
+    </script>
 </body>
 </html>
