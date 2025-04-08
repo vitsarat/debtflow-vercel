@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>งาน - DebtFlow</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 70px;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        h3 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        .task-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .task-item p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #333;
+        }
+        .task-item p i {
+            margin-right: 8px;
+            color: #1e3c72;
+        }
+        .task-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .task-actions button, .task-actions a {
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn-details { background: #1e90ff; color: #fff; }
+        .btn-accept { background: #28a745; color: #fff; }
+        .btn-forward { background: #ffcc00; color: #333; }
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+        .nav-item {
+            color: #666;
+            text-align: center;
+            font-size: 12px;
+            text-decoration: none;
+        }
+        .nav-item.active {
+            color: #1e3c72;
+        }
+        .nav-item i {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>งาน - DebtFlow</h3>
+        <div id="taskList"></div>
+    </div>
+
+    <div class="nav-bar">
+        <a href="dashboard.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            หน้าแรก
+        </a>
+        <a href="tasks.html" class="nav-item active">
+            <i class="fas fa-briefcase"></i>
+            งาน
+        </a>
+        <a href="performance.html" class="nav-item">
+            <i class="fas fa-chart-line"></i>
+            ผลงาน
+        </a>
+        <a href="income.html" class="nav-item">
+            <i class="fas fa-wallet"></i>
+            รายได้
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i class="fas fa-user-circle"></i>
+            โปรไฟล์
+        </a>
+    </div>
+
+    <script>
+        const BASE_URL = "/api"; // Vercel จะจัดการ routing ให้อัตโนมัติ
+
+        async function loadTasks() {
+            try {
+                const response = await fetch(`${BASE_URL}/fetchTasks`);
+                const result = await response.json();
+
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+
+                const tasks = result.values || [];
+                console.log('ผลลัพธ์จาก Google Sheets:', tasks.length, 'รายการ');
+
+                const taskList = document.getElementById('taskList');
+                taskList.innerHTML = '';
+
+                if (tasks.length === 0) {
+                    taskList.innerHTML = '<p style="text-align: center;">ไม่มีงานในขณะนี้</p>';
+                    return;
+                }
+
+                tasks.forEach(row => {
+                    const task = {
+                        taskId: row[0] || '',
+                        debtor: row[1] || '',
+                        contractNo: row[2] || '',
+                        principle: row[3] || '',
+                        address: row[4] || '',
+                        phone: row[5] || '',
+                        brand: row[6] || '',
+                        model: row[7] || '',
+                        status: row[8] || '',
+                        note: row[9] || '',
+                        lastUpdated: row[10] || '',
+                        attachment: row[11] || ''
+                    };
+
+                    const taskItem = document.createElement('div');
+                    taskItem.className = 'task-item';
+                    taskItem.innerHTML = `
+                        <p><i class="fas fa-file-alt"></i> ${task.taskId}</p>
+                        <p><i class="fas fa-user"></i> ${task.debtor || 'ไม่ระบุ'}</p>
+                        <p><i class="fas fa-map-marker-alt"></i> สถานะ: ${task.status || 'ไม่ระบุ'}</p>
+                        <div class="task-actions">
+                            <a href="task-details.html?taskId=${task.taskId}" class="btn-details"><i class="fas fa-eye"></i> ดูรายละเอียด</a>
+                            <button class="btn-accept" onclick="updateTaskStatus('${task.taskId}', 'completed')"><i class="fas fa-check"></i> รับงาน</button>
+                            <button class="btn-forward" onclick="updateTaskStatus('${task.taskId}', 'forwarded')"><i class="fas fa-share"></i> ฝากงาน</button>
+                        </div>
+                    `;
+                    taskList.appendChild(taskItem);
+                });
+            } catch (error) {
+                console.error('Error loading tasks:', error);
+                document.getElementById('taskList').innerHTML = '<p style="text-align: center; color: red;">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
+            }
+        }
+
+        async function updateTaskStatus(taskId, status) {
+            try {
+                const response = await fetch(`${BASE_URL}/updateTaskStatus`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ taskId, status })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    alert(`อัปเดตสถานะเป็น "${status}" สำเร็จ!`);
+                    loadTasks();
+                } else {
+                    alert('ไม่พบงาน');
+                }
+            } catch (error) {
+                console.error('Error updating task status:', error);
+                alert('เกิดข้อผิดพลาดในการอัปเดตสถานะ');
+            }
+        }
+
+        window.onload = loadTasks;
+    </script>
+</body>
+</html>
