@@ -1,14 +1,5 @@
 {
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/dashboard.html"
-    },
-    {
-      "source": "/dashboard",
-      "destination": "/dashboard.html"
-    }
-  ],
+  "version": 2,
   "builds": [
     {
       "src": "public/**",
@@ -19,13 +10,21 @@
       "use": "@vercel/node"
     }
   ],
-  "outputDirectory": "public",
-  "functions": {
-    "api/*.js": {
-      "memory": 128,
-      "maxDuration": 10
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/dashboard.html"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "/dashboard.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
     }
-  },
+  ],
+  "outputDirectory": "public",
   "cleanUrls": true,
   "trailingSlash": false
 }
