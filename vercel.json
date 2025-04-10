@@ -4,6 +4,10 @@
     {
       "src": "public/**",
       "use": "@vercel/static"
+    },
+    {
+      "src": "api/**",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -14,6 +18,13 @@
     {
       "src": "/dashboard",
       "dest": "/dashboard.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
     }
-  ]
+  ],
+  "outputDirectory": "public",
+  "cleanUrls": true,
+  "trailingSlash": false
 }
