@@ -4,6 +4,10 @@
     {
       "src": "public/**",
       "use": "@vercel/static"
+    },
+    {
+      "src": "api/**",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
